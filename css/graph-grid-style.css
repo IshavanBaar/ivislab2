@@ -1,0 +1,30 @@
+/* graph and grid */
+body, html {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  font-size: 12px;
+}
+.badge, .label {
+  font-weight: normal;
+}
+
+#grid, #pager {
+  position: fixed;
+  width: 100%;
+}
+#grid {
+  bottom: 0;
+  height: 300px;
+}
+#pager {
+  bottom: 306px;
+  height: 20px;
+  margin-top: 25px;
+}
+.slick-row:hover {
+  font-weight: bold;
+  /*TODO here the color can be changed*/
+  color: #069;
+}
