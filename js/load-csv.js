@@ -4,7 +4,7 @@
 */
 
 // Here csv file is loaded
-d3.csv('data/test-csv.csv', function(data) {
+d3.csv('data/data_table_justifiability_1.csv', function(data) {
   // slickgrid needs each data element to have an id
   data.forEach(function(d,i) { d.id = d.id || i; });
 

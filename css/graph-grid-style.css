@@ -15,7 +15,6 @@ body, html {
   width: 100%;
 }
 #grid {
-  bottom: 0;
   height: 300px;
 }
 #pager {
