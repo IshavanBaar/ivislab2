@@ -29,33 +29,76 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-md-2">
+			<div class="col-md-3">
 				<ul class="nav nav-pills nav-stacked"  id="tabs" >  
 					<li class="active"><a href="#tab1" data-toggle="tab">Exploration</a></li>     
-					<li><a href="#tab2" data-toggle="tab">Raw Data</a></li>  
-					<li><a href="#tab3" data-toggle="tab">Data table</a></li>   
-					<li><a href="#tab4" data-toggle="tab">Visual Structs + View</a></li>   
-					<li><a href="#tab5" data-toggle="tab">Conclusion</a></li>
+					<li><a href="#tab2" data-toggle="tab">Collecting Raw Data</a></li>  
+					<li><a href="#tab3" data-toggle="tab">Transforming to Data Table 1</a></li>   
+					<li><a href="#tab4" data-toggle="tab">Transforming to Data Table 2</a></li>
+					<li><a href="#tab5" data-toggle="tab">Visual Structures & View</a></li>   
+					<li><a href="#tab6" data-toggle="tab">Conclusion</a></li>
 				</ul>  
 			</div>
-			<div class="tab-content col-md-10">
+			<div class="tab-content col-md-9">
 				<div class="tab-pane active" id="tab1">
 					<div>
-						<p>interests+research question,2.get raw data,3.data transformations,parallel coordinates+no view transformations, but change of order,insights+link to result.</p>
-						<a class="btn" href="parallel-justifiability-1.html">See the result of Analytical Trail 1!</a> 
+						<p>When I investigated the <a href="http://worldvaluessurvey.org/">World Values Survey</a> (WVS) data, I found that my interest lay in comparing countries' answers to questions that covered more options, like what is important in life (6 separate questions) or important child qualities (11 separate options). 
+						By comparing those options I found that I could make a pretty good estimation for what countries nowadays think of important values. However I had to constantly move forth and back on the WVS website for getting to that conclusion, which was very inconvenient. 
+						<br><br>
+						I therefore decided to focus on one particularly interesting multi-option covering question about what is justifiable (15 options). My goal was to find a way to nicely visualize those options so that one could easily see relationships and the general consensus. 
+						Thus, the rather exploratory research question became:
+						</p>
+						<blockquote><p>"Which delicate acts are nowadays generally considered as justifiable by countries in the world and which not, and are there any relationships between the considered justifiability values of the acts?"</p></blockquote>
 					</div>
 				</div>				    	 	
 				<div class="tab-pane iactive" id="tab2">
-					<div><p>bla2</p></div>
+					<p>To get the data I had to consider all 15 questions on considered justifiability in the most recent timeframe, 2010-2014. As I wanted to take a global measurement, I also had to include as many countries as possible (59). 
+					<br><br>
+					Thus, I got raw data in the form of 15 separate excel sheets that included country names (categorical) and weighted percentages, mean and standard deviation (numerical). The weights were put between 1 (never justifiable) and 10 (always justifiable).
+					</p>
+					<a class="btn" href=" https://www.dropbox.com/s/fx2vo4z8h2jqloo/raw-data.zip?dl=0">Check the raw data!</a>
 				</div>
 				<div class="tab-pane iactive" id="tab3">
-					<div><p>bla3</p></div>
+					<p>
+					I had to apply some data transformations to get a data table. The justifiability data sets, consisting of country names (columns) and justifiability data (rows) needed to be merged in the end. First of all, I checked if in all justifiability data sets the country names and justifiability data were written in the same way and order. Luckily, they were. 
+					<br><br>
+					Then, quite late I discovered missing values. Some countries did not answer certain justifiability questions. As I wanted to clarify underlying relationships, gaps could not be there and I had to clean and fill them. At first I tried extrapolating by searching old data from the 2005-2009 time frame to fill the gaps, but without success.
+					<br><br>	
+					My strategy then was to simply eliminate. I had to remove countries and/or entire justifiability data sets. In respect to the research question I wanted to keep as many countries AND sets as possible. Thus, after I identified the gaps in a table I iteratively decided to remove those countries or data sets that had the most gaps at that moment. 
+					Therefore gaps were removed with as few steps as possible and only 2 countries and 3 datasets were thrown away.
+					</p>
+					<a class="btn" href=" https://www.dropbox.com/s/byswfflhz74mdjw/AvailableData.xlsx?dl=0">Check the data gaps and eliminated data! </a>
 				</div>
 				<div class="tab-pane iactive" id="tab4">
-					<div><p>bla4</p></div>
+					<p>
+					After I had eliminated the countries and data sets that corresponded to the data gaps, I did some more cleaning. I filtered all the noise. For simplicity I chose to trust the mean data for each justifiability data set, so I only had to take the mean value rows and merge those, together with the country names. Also, the column that represented the TOTAL value could be eliminated. 
+					<br><br>
+					Thirdly, I transposed the mean value rows into columns. Country names became variables and means (after I had renamed them to the question of that data set) became cases
+					<br><br>
+					Lastly, I merged all mean value columns in one big file, sorted alphabetically, and then performed character replacement to create a good CSV (turned all commas to decimal points, turned all semicolons in CSV file to commas).
+					</p>
+					<a class="btn" href= "https://www.dropbox.com/s/347024s9j0xx6qb/data_table_justifiability_1.csv?dl=0">Check the data table!</a>
 				</div>
 				<div class="tab-pane iactive" id="tab5">
-					<div><p>bla5</p></div>
+					<p>Ever since I had read the <a class="btn" href="http://innovis.cpsc.ucalgary.ca/innovis/uploads/Courses/InformationVisualizationDetails2009/Inselberg1997.pdf"> Multidimensional Detective paper</a> on parallel coordinates(parcoords) I became fascinated by its possibilities. Moreover, parcoords suit my research question very well, and therefore I argued it could be the ideal visual structure. 
+					<br><br>
+					First of all, this is because Parcoords deal very well with multidimensional variables. They simply turn in one vertical axis each. Since I had 11 variables (questions on justifiability) left, those could easily be projected to the parcoords framework. I only stumbled upon a situation where the labels on top of the axis collided, after which I had to change the column order of my data table.
+					Secondly, by having the user select the (relatively) high and low values, it is both easily visible which delicate acts are considered as (non) justifiable and if there are any relationships between these considerations.
+					<br><br>
+					As I did not perform any special view transformation when I linked the visual structure to this website, the visual structure is the same as the view. 
+					</p>
+					<div><a class="btn" href="parallel-justifiability-1.html">Check the view! (sometimes you need to refresh to see the grid below)</a> </div>
+				</div>
+				<div class="tab-pane iactive" id="tab6">
+					<p>
+					There is no simple one-sided answer to my research question, but with a little bit of effort, you could already draw some very interesting conclusions that partly answer it. For example that it is visible that most of the countries really don’t think that violence to others and stealing property is justifiable. 
+					<br></br>
+					The exceptions however reveal the most interesting information. Some countries clearly think different on some justification variables. In India, beating your wife, accepting bribes and violence to others are relatively more accepted than other countries. 
+					Also, while a lot of countries think violence to others is not justifiable, they clearly change opinion when beating children is mentioned.  Sexual issues like abortion and homosexuality seem to be equally as justifiable. The view on divorcing and beating your wife seems to be inversely related. These insights could not easily be gained on the WVS website.
+					<br><br>
+					I still think parallel coordinates are a good choice, although the data gaps situation made me doubt for a moment as there could not be any gap in parallel coordinates. Also, although I think it is good to compare the lines flowing through an axe, I think that putting the maximum value of the set as the maximum axe range is bad in a relative sense, when comparing the variables. 
+					Lastly, I gained from personal benefits like learning HTML, JavaScript, D3JS and Bootstrap, learning the visualization pipeline and learning how to collect and select data.
+					</p>
 				</div>
 			</div>
 		</div>
