@@ -1,7 +1,7 @@
 /* graph and grid */
 body, html {
   margin: 0;
-  height: 105%;
+  height: 100%;
 }
 .badge, .label {
   font-weight: normal;
