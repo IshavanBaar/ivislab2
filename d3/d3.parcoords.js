@@ -1,6 +1,9 @@
 d3.parcoords = function(config) {
   var __ = {
     dimensions: [],
+	//here
+	dimensionTitles: {},
+    dimensionTitleRotation: 0,
     data: [],
     brushed: false,
     mode: "default",
@@ -40,7 +43,7 @@ d3.parcoords = function(config) {
 
     return pc;
   };
-
+	
   var events = d3.dispatch.apply(this,["render", "resize", "highlight", "brush"].concat(d3.keys(__))),
       w = function() { return __.width - __.margin.right - __.margin.left; },
       h = function() { return __.height - __.margin.top - __.margin.bottom },
@@ -122,7 +125,13 @@ d3.parcoords = function(config) {
 
     return this;
   };
+ //here
+  pc.flip = function(d) {
+	//yscale[d].domain().reverse();					// does not work
+	yscale[d].domain(yscale[d].domain().reverse()); // works
 
+	return this;
+};
   pc.detectDimensions = function() {
     pc.dimensions(d3.parcoords.quantitative(__.data));
     return this;
@@ -181,7 +190,28 @@ d3.parcoords = function(config) {
     ctx[layer].clearRect(0,0,w()+2,h()+2);
     return this;
   };
+function flipAxisAndUpdatePCP(dimension, i) {
+  var g = pc.svg.selectAll(".dimension");
 
+  pc.flip(dimension);
+  d3.select(g[0][i])
+    .transition()
+      .duration(1100)
+      .call(axis.scale(yscale[dimension]));
+
+  pc.render();
+  if (flags.shadows) paths(__.data, ctx.shadows);
+}
+function rotateLabels() {
+  var delta = d3.event.deltaY;
+  delta = delta < 0 ? -5 : delta;
+  delta = delta > 0 ? 5 : delta;
+
+  __.dimensionTitleRotation += delta;
+  pc.svg.selectAll("text.label")
+    .attr("transform", "translate(0,-5) rotate(" + __.dimensionTitleRotation + ")");
+  d3.event.preventDefault();
+}
   pc.createAxes = function() {
     if (g) pc.removeAxes(); 
 
@@ -201,11 +231,16 @@ d3.parcoords = function(config) {
         .attr({
           "text-anchor": "middle",
           "y": 0,
-          "transform": "translate(0,-12)",
+          "transform": "translate(0,-5) rotate(" + __.dimensionTitleRotation + ")",
           "x": 0,
           "class": "label"
         })
-        .text(String)
+        //Here
+		.text(function(d) {
+        return d in __.dimensionTitles ? __.dimensionTitles[d] : d;  // dimension display names
+         })
+         .on("dblclick", flipAxisAndUpdatePCP)
+         .on("wheel", rotateLabels);
 
     flags.axes= true;
     return this;
@@ -232,12 +267,30 @@ d3.parcoords = function(config) {
         .attr({
           "text-anchor": "middle",
           "y": 0,
-          "transform": "translate(0,-12)",
+          "transform": "translate(0,-5) rotate(" + __.dimensionTitleRotation + ")",
           "x": 0,
           "class": "label"
         })
-        .text(String);
+		//here
+      .text(String)
+      .on("dblclick", flipAxisAndUpdatePCP)
+      .on("wheel", rotateLabels);
 
+	  //here
+	  // Update
+  g_data.attr("opacity", 0);
+  g_data.select(".axis")
+    .transition()
+      .duration(1100)
+      .each(function(d) {
+        d3.select(this).call(axis.scale(yscale[d]));
+      });
+  g_data.select(".label")
+    .transition()
+      .duration(1100)
+      .text(String)
+      .attr("transform", "translate(0,-5) rotate(" + __.dimensionTitleRotation + ")");
+	  //exit
     g_data.exit().remove();
 
     g = pc.svg.selectAll(".dimension");

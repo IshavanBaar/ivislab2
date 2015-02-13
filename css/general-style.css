@@ -16,10 +16,16 @@ a {
 	text-decoration: none;
 }
 
+.black-header {
+	color: #000000; 
+}
 #subtitle {
-    font-size: 14px;
 	font-style: italic;
     color: #808080;
+}
+
+.float-right {
+	float: right;
 }
 
 blockquote {

@@ -6,7 +6,7 @@ classes should alter those!
 */
 
 .slick-header.ui-state-default, .slick-headerrow.ui-state-default {
-  width: 70%; /*changed*/
+  width: 100%; /*changed*/
   overflow: hidden;
   border-left: 0px;
 }
